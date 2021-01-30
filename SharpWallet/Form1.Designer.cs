@@ -40,6 +40,7 @@ namespace SharpWallet
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainFrm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainFrm_FormClosed);
             this.Load += new System.EventHandler(this.MainFrm_Load);
             this.ResumeLayout(false);
 

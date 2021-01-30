@@ -33,6 +33,93 @@ namespace SharpWallet
                 windowPositionY = Screen.PrimaryScreen.Bounds.Height / 2 - this.windowHeight / 2;
                 createConfigFile();
             }
+
+            loadConfig();
+        }
+
+        // try to load xml
+        private void loadConfig()
+        {
+            XmlTextReader reader = null;
+
+            try
+            {
+                reader = new XmlTextReader(configFilename);
+                string element;
+                bool windowHeight = false;
+                bool windowWidth = false;
+                bool windowPositionX = false;
+                bool windowPositionY = false;
+
+
+                while (reader.Read())
+                {
+                    switch(reader.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            element = reader.Name;
+                            if (element == "windowHeight")
+                            {
+                                windowHeight = true;
+                            }
+                            else if(element == "windowWidth")
+                            {
+                                windowWidth = true;
+                            }
+                            else if(element == "windowPositionX")
+                            {
+                                windowPositionX = true;
+                            }
+                            else if(element == "windowPositionY")
+                            {
+                                windowPositionY = true;
+                            }
+                            break;
+
+                        case XmlNodeType.Text:
+                            if (windowHeight)
+                            {
+                                windowHeight = false;
+                                this.windowHeight = Convert.ToInt32(reader.Value);
+                            }
+                            else if (windowWidth)
+                            {
+                                windowWidth = false;
+                                this.windowWidth = Convert.ToInt32(reader.Value);
+                            }
+                            else if (windowPositionX)
+                            {
+                                windowPositionX = false;
+                                this.windowPositionX = Convert.ToInt32(reader.Value);
+                            }
+                            else if (windowPositionY)
+                            {
+                                windowPositionY = false;
+                                this.windowPositionY = Convert.ToInt32(reader.Value);
+                            }
+                            break;
+                    }
+                }
+
+            } 
+            finally
+            {
+                if(reader != null)
+                {
+                    reader.Close();
+                }
+            }
+
+        }
+
+        private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.windowHeight = this.Height;
+            this.windowWidth = this.Width;
+            this.windowPositionX = this.Left;
+            this.windowPositionY = this.Top;
+
+            createConfigFile();
         }
 
         // create the xml file
@@ -54,6 +141,8 @@ namespace SharpWallet
         private void MainFrm_Load(object sender, EventArgs e)
         {
             this.Location = new Point(windowPositionX, windowPositionY);
+            this.Width = windowWidth;
+            this.Height = windowHeight;
         }
     }
 }
