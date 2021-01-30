@@ -31,14 +31,14 @@ namespace SharpWallet
                 
                 windowPositionX = Screen.PrimaryScreen.Bounds.Width / 2 - this.windowWidth / 2;
                 windowPositionY = Screen.PrimaryScreen.Bounds.Height / 2 - this.windowHeight / 2;
-                createConfigFile();
+                CreateConfigFile();
             }
 
-            loadConfig();
+            LoadConfig();
         }
 
         // try to load xml
-        private void loadConfig()
+        private void LoadConfig()
         {
             XmlTextReader reader = null;
 
@@ -119,11 +119,11 @@ namespace SharpWallet
             this.windowPositionX = this.Left;
             this.windowPositionY = this.Top;
 
-            createConfigFile();
+            CreateConfigFile();
         }
 
         // create the xml file
-        private void createConfigFile()
+        private void CreateConfigFile()
         {
             using(XmlWriter writer = XmlWriter.Create(configFilename))
             {
