@@ -17,6 +17,7 @@ namespace SharpWallet
         private string configFilename;
         private int windowWidth, windowHeight;
         private int windowPositionX, windowPositionY;
+        private string databaseFileName;
 
         public MainFrm()
         {
@@ -31,6 +32,8 @@ namespace SharpWallet
                 
                 windowPositionX = Screen.PrimaryScreen.Bounds.Width / 2 - this.windowWidth / 2;
                 windowPositionY = Screen.PrimaryScreen.Bounds.Height / 2 - this.windowHeight / 2;
+
+                databaseFileName = Directory.GetCurrentDirectory() + "\\sharpwallet.json";
                 CreateConfigFile();
             }
 
@@ -50,6 +53,7 @@ namespace SharpWallet
                 bool windowWidth = false;
                 bool windowPositionX = false;
                 bool windowPositionY = false;
+                bool databaseFileName = false;
 
 
                 while (reader.Read())
@@ -74,6 +78,10 @@ namespace SharpWallet
                             {
                                 windowPositionY = true;
                             }
+                            else if(element == "databaseFileName")
+                            {
+                                databaseFileName = true;
+                            }
                             break;
 
                         case XmlNodeType.Text:
@@ -96,6 +104,11 @@ namespace SharpWallet
                             {
                                 windowPositionY = false;
                                 this.windowPositionY = Convert.ToInt32(reader.Value);
+                            }
+                            else if (databaseFileName)
+                            {
+                                databaseFileName = false;
+                                this.databaseFileName = reader.Value;
                             }
                             break;
                     }
@@ -132,6 +145,7 @@ namespace SharpWallet
                 writer.WriteElementString("windowWidth", Convert.ToString(windowWidth));
                 writer.WriteElementString("windowPositionX", Convert.ToString(windowPositionX));
                 writer.WriteElementString("windowPositionY", Convert.ToString(windowPositionY));
+                writer.WriteElementString("databaseFileName", databaseFileName);
                 writer.WriteEndElement();
 
                 writer.Flush();
@@ -143,6 +157,7 @@ namespace SharpWallet
             this.Location = new Point(windowPositionX, windowPositionY);
             this.Width = windowWidth;
             this.Height = windowHeight;
+
         }
     }
 }
