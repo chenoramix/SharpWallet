@@ -9,13 +9,12 @@ namespace SharpWallet
 {
     class CreateLoadConfig
     {
-        private string configFilename;
+        public string configFilename { get; set; }
         public int windowWidth { get; set; }
         public int windowHeight { get; set; }
         public int windowPositionX { get; set; }
         public int windowPositionY { get; set; }
-
-        private string databaseFileName;
+        public string databaseFileName { get; set; }
 
         public CreateLoadConfig()
         {

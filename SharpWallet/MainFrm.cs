@@ -8,21 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Xml;
 
 namespace SharpWallet
 {
     public partial class MainFrm : Form
     {
         CreateLoadConfig configFile;
+        public static string databaseFileName;
         public MainFrm()
         {
             InitializeComponent();
             configFile = new CreateLoadConfig();
 
-            string configFilename = "sharpwallet.xml";
-
-            if(!File.Exists(configFilename))
+            if(!File.Exists(configFile.configFilename))
             {
                 configFile.setWindowSize(this.Width, this.Height);
                 
@@ -30,9 +28,16 @@ namespace SharpWallet
                 int windowPositionY = Screen.PrimaryScreen.Bounds.Height / 2 - this.Height / 2;
 
                 configFile.setWindowPosition(windowPositionX, windowPositionY);
+
+                databaseFileName = Directory.GetCurrentDirectory() + "\\sharpwallet.db";
+
+                CreateDatabaseFile cdFile = new CreateDatabaseFile();
+                cdFile.ShowDialog();
+
+                configFile.databaseFileName = databaseFileName;
                 configFile.CreateConfigFile();
             }
-
+            
             configFile.LoadConfig();
         }
 
