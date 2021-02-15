@@ -8,13 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace SharpWallet
 {
     public partial class MainFrm : Form
     {
         CreateLoadConfig configFile;
-        public static string databaseFileName;
+        Database database;
+        public static string databaseFileName, password;
         public MainFrm()
         {
             InitializeComponent();
@@ -31,13 +33,19 @@ namespace SharpWallet
 
                 databaseFileName = Directory.GetCurrentDirectory() + "\\sharpwallet.db";
 
+                //  it fills databaseFileName and password
                 CreateDatabaseFile cdFile = new CreateDatabaseFile();
                 cdFile.ShowDialog();
 
                 configFile.databaseFileName = databaseFileName;
                 configFile.CreateConfigFile();
+
+                // compute sha256 and fill database
+
             }
-            
+
+            //database = new Database();
+
             configFile.LoadConfig();
         }
 

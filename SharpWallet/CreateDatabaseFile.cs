@@ -49,6 +49,7 @@ namespace SharpWallet
             }
 
             MainFrm.databaseFileName = textFilePath.Text;
+            MainFrm.password = textBoxPassword1.Text;
             this.Close();
         }
 
