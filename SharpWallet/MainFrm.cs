@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
@@ -41,12 +42,39 @@ namespace SharpWallet
                 configFile.CreateConfigFile();
 
                 // compute sha256 and fill database
+                database = new Database();
+                using(SHA256 sha256 = SHA256.Create())
+                {
+                    string hash = GetHash(sha256, password);
+                    database.hashSha256 = hash;
+                    password = "";
+                }
 
+                //serialize as json
+                string jsonString = JsonSerializer.Serialize(database);
+                File.WriteAllText(configFile.databaseFileName, jsonString);
             }
 
-            //database = new Database();
-
             configFile.LoadConfig();
+            database = new Database();
+
+            string jsonText = File.ReadAllText(configFile.databaseFileName);
+            database = JsonSerializer.Deserialize<Database>(jsonText);
+        }
+
+        // compute sha256 hash
+        private string GetHash(HashAlgorithm hashAlgorithm, string input)
+        {
+            byte[] data = hashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for(int a = 0; a < data.Length; a++)
+            {
+                stringBuilder.Append(data[a].ToString("x2"));
+            }
+
+            return stringBuilder.ToString();
         }
 
         private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)

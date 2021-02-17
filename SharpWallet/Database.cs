@@ -8,19 +8,14 @@ namespace SharpWallet
 {
     class Database
     {
-        private string hashSha256;
-        private List<Entry> listEntry;
+        public string hashSha256 { get; set; }
+        public List<Entry> listEntry { get; set; }
 
         public Database()
         {
             listEntry = new List<Entry>();
         }
-        //set hash
-        public void setHash(string hash)
-        {
-            this.hashSha256 = hash;
-        }
-
+        
         //create database
         public void createDatabase(string pathFilename)
         {
