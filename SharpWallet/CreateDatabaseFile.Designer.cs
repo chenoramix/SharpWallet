@@ -153,6 +153,7 @@ namespace SharpWallet
             this.MaximizeBox = false;
             this.Name = "CreateDatabaseFile";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CreateDatabaseFile_FormClosing);
             this.Load += new System.EventHandler(this.CreateDatabaseFile_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);

@@ -63,5 +63,11 @@ namespace SharpWallet
                 textFilePath.Text = saveFileDialog1.FileName;
             }
         }
+
+        private void CreateDatabaseFile_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            return;
+        }
     }
 }
