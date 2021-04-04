@@ -16,17 +16,6 @@ namespace SharpWallet
             listEntry = new List<Entry>();
         }
         
-        //create database
-        public void createDatabase(string pathFilename)
-        {
-
-        }
-
-        public void loadDatabase(string pathFilename)
-        {
-
-        }
-
         public void addEntry(Entry entry)
         {
             listEntry.Add(entry);
