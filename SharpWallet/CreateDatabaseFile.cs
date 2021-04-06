@@ -6,9 +6,12 @@ namespace SharpWallet
 {
     public partial class CreateDatabaseFile : Form
     {
+        bool closeByOk;
         public CreateDatabaseFile()
         {
             InitializeComponent();
+
+            closeByOk = false;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -44,6 +47,8 @@ namespace SharpWallet
 
             MainFrm.databaseFileName = textFilePath.Text;
             MainFrm.password = textBoxPassword1.Text;
+            closeByOk = true;
+
             this.Close();
         }
 
@@ -60,7 +65,7 @@ namespace SharpWallet
 
         private void CreateDatabaseFile_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
+            if(!closeByOk) e.Cancel = true;
             return;
         }
     }

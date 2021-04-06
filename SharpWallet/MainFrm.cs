@@ -18,6 +18,7 @@ namespace SharpWallet
         CreateLoadConfig configFile;
         Database database;
         public static string databaseFileName, password;
+
         public MainFrm()
         {
             InitializeComponent();
@@ -34,32 +35,41 @@ namespace SharpWallet
 
                 databaseFileName = Directory.GetCurrentDirectory() + "\\sharpwallet.db";
 
-                //  it fills databaseFileName and password
-                CreateDatabaseFile cdFile = new CreateDatabaseFile();
-                cdFile.ShowDialog();
-
+                CreateDBFile();
+                
                 configFile.databaseFileName = databaseFileName;
                 configFile.CreateConfigFile();
-
-                // compute sha256 and fill database
-                database = new Database();
-                using(SHA256 sha256 = SHA256.Create())
-                {
-                    string hash = GetHash(sha256, password);
-                    database.hashSha256 = hash;
-                    password = "";
-                }
-
-                //serialize as json
-                string jsonString = JsonSerializer.Serialize(database);
-                File.WriteAllText(configFile.databaseFileName, jsonString);
             }
 
             configFile.LoadConfig();
-            database = new Database();
 
+            //check for missing db stuff,msg box about it
+
+            database = new Database();
+            
             string jsonText = File.ReadAllText(configFile.databaseFileName);
             database = JsonSerializer.Deserialize<Database>(jsonText);
+        }
+
+        //create the empty db file on disk, populate it with hash
+        private void CreateDBFile()
+        {
+            //  it fills databaseFileName and password
+            CreateDatabaseFile cdFile = new CreateDatabaseFile();
+            cdFile.ShowDialog();
+
+            // compute sha256 and fill database
+            database = new Database();
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                string hash = GetHash(sha256, password);
+                database.hashSha256 = hash;
+                password = "";
+            }
+
+            //serialize as json
+            string jsonString = JsonSerializer.Serialize(database);
+            File.WriteAllText(configFile.databaseFileName, jsonString);
         }
 
         // compute sha256 hash
@@ -89,6 +99,7 @@ namespace SharpWallet
             this.Location = new Point(configFile.windowPositionX, configFile.windowPositionY);
             this.Width = configFile.windowWidth;
             this.Height = configFile.windowHeight;
+            this.Text = "Sharpwallet v1.0";
         }
     }
 }
